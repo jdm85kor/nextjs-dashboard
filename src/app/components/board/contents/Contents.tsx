@@ -1,10 +1,12 @@
 "use strict";
 
 
-import styles from "./Contents.module.css";
+import { formatInTimeZone } from "date-fns-tz";
 import { useState } from "react";
-import Pagination from "../../pagination/Pagination";
+import Pagination from "../../atomic/pagination/Pagination";
 import type { Event } from "../../../../types/event";
+
+import styles from "./Contents.module.css";
 
 interface Props {
   event: {
@@ -12,10 +14,11 @@ interface Props {
     nextPageToken: string;
     totalSize: number;
   };
+  timeZone: string;
 }
 
 export default function Contents(props: Props) {
-  const { event } = props;
+  const { event, timeZone } = props;
 
   const [curPage, setCurPage] = useState(1);
 
@@ -42,7 +45,13 @@ export default function Contents(props: Props) {
             <tr key={id}>
               <td>{id}</td>
               <td>{type ?? "-"}</td>
-              <td>{createTime.toISOString()}</td>
+              <td>
+                {formatInTimeZone(
+                  createTime,
+                  timeZone,
+                  "MMM, dd, yyyy, HH:mm a"
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,9 +1,9 @@
 import { cache, Suspense } from "react";
-import styles from "./page.module.css";
 import { eventClient } from "./lib/connectRpc-node";
+import { convertProject, convertEvent } from "./lib/convert";
 import Board from "./components/board/Board";
 
-import { convertProject, convertEvent } from "./lib/convert";
+import styles from "./page.module.css";
 
 const getProjects = cache(async () => {
   const res = await eventClient.listProjects({});
@@ -19,12 +19,11 @@ export default async function Home() {
   const convertedProjects = (await getProjects()).map((project) =>
     convertProject(project)
   );
-  const initEvent = await getEvents(convertedProjects[0].id);
+  const originEventInfo = await getEvents(convertedProjects[0].id);
   const convertedEvents = {
-    ...initEvent,
-    events: initEvent.events.map((event) => convertEvent(event)),
+    ...originEventInfo,
+    events: originEventInfo.events.map((event) => convertEvent(event)),
   };
-  console.log(convertedEvents);
 
   return (
     <Suspense
@@ -35,7 +34,7 @@ export default async function Home() {
       }
     >
       <div className={styles.page}>
-        <Board projects={convertedProjects} event={convertedEvents} />
+        <Board projects={convertedProjects} defaultEvent={convertedEvents} />
       </div>
     </Suspense>
   );

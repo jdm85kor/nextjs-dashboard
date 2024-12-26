@@ -1,7 +1,7 @@
 "use client";
 
-import Dropdown from "../../dropdown/Dropdown";
-import Button from "../../button/Button";
+import Dropdown from "../../atomic/dropdown/Dropdown";
+import Button from "../../atomic/button/Button";
 import { DateFilter } from "../../../types";
 import styles from "./Header.module.css";
 import type { Project } from "../../../../types/project";

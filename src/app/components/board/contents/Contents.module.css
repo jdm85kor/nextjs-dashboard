@@ -15,9 +15,11 @@
 }
 .table .thead tr th:first-child {
   border-top-left-radius: 10px;
+  width: 30%;
 }
 .table .thead tr th:last-child {
   border-top-right-radius: 10px;
+  width: 40%;
 }
 
 .table .tbody tr {
