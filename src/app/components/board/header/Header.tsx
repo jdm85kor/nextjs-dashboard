@@ -2,35 +2,72 @@
 
 import Dropdown from "../../dropdown/Dropdown";
 import Button from "../../button/Button";
+import { DateFilter } from "../../../types";
 import styles from "./Header.module.css";
 
-interface Props {}
+interface Props {
+  currProjectId: string;
+  projects: {
+    id: string;
+    displayName: string;
+    timeZone: any;
+  }[];
+  onChangeProject: (projectId: string) => void;
+  onClickDateFilter: (filter: DateFilter) => void;
+}
 
-export default function Header(props: Props) {
+export default function Header({
+  currProjectId,
+  projects,
+  onChangeProject,
+  onClickDateFilter,
+}: Props) {
   return (
     <header className={styles.header}>
       <Dropdown
-        options={[
-          { label: "1", value: "1" },
-          { label: "2", value: "2" },
-        ]}
-        onChange={(value) => console.log(value)}
+        curValue={currProjectId}
+        options={projects.map(({ displayName, id }) => ({
+          label: displayName,
+          value: id,
+        }))}
+        onChange={(value) => onChangeProject(value)}
       />
       <ol className={styles.buttonGroup}>
         <li key={1}>
-          <Button />
+          <Button label="Today" value="TODAY" onClick={onClickDateFilter} />
         </li>
         <li key={2}>
-          <Button />
+          <Button
+            label="Yesterday"
+            value="YESTERDAY"
+            onClick={onClickDateFilter}
+          />
         </li>
         <li key={3}>
-          <Button />
+          <Button label="7D" value="LAST_7_DAYS" onClick={onClickDateFilter} />
         </li>
         <li key={4}>
-          <Button />
+          <Button
+            label="30D"
+            value="LAST_30_DAYS"
+            onClick={onClickDateFilter}
+          />
         </li>
         <li key={5}>
-          <Button />
+          <Button label="3M" value="LAST_3_MONTH" onClick={onClickDateFilter} />
+        </li>
+        <li key={6}>
+          <Button label="6M" value="LAST_6_MONTH" onClick={onClickDateFilter} />
+        </li>
+        <li key={7}>
+          <Button
+            label="12M"
+            value="LAST_12_MONTH"
+            onClick={onClickDateFilter}
+          />
+        </li>
+        <li key={8}>
+          <Button label="CUSTOM" value="CUSTOM" onClick={onClickDateFilter} />
         </li>
       </ol>
     </header>

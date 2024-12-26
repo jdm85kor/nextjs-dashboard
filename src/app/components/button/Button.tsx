@@ -2,8 +2,20 @@
 
 import styles from "./Button.module.css";
 
-interface Props {}
+interface Props<T> {
+  label?: string;
+  value: T;
+  onClick: (val: T) => void;
+}
 
-export default function Button(props: Props) {
-  return <button className={styles.button}>Button</button>;
+export default function Button<T>({ label = "", value, onClick }: Props<T>) {
+  return (
+    <button
+      className={styles.button}
+      type="button"
+      onClick={() => onClick(value)}
+    >
+      {label}
+    </button>
+  );
 }

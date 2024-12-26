@@ -5,16 +5,6 @@ import Contents from "./contents/Contents";
 import styles from "./Board.module.css";
 import { useState } from "react";
 
-type DateFilter =
-  | "TODAY"
-  | "YESTERDAY"
-  | "LAST_7_DAYS"
-  | "LAST_30_DAYS"
-  | "LAST_3_MONTH"
-  | "LAST_6_MONTH"
-  | "LAST_12_MONTH"
-  | "CUSTOM";
-
 interface Props {
   projects: {
     id: string;
@@ -33,9 +23,22 @@ export default function Board(props: Props) {
   const [dateFilter, setFilter] = useState<DateFilter>("LAST_30_DAYS");
   const [currProjectId, setCurrProjectId] = useState(projects[0].id);
 
+  const handleChangeProject = (projectId: string) => {
+    setCurrProjectId(projectId);
+  };
+
+  const handleClickDateFilter = (filter: DateFilter) => {
+    setFilter(filter);
+  };
+
   return (
     <section className={styles.board}>
-      <Header projects={projects} />
+      <Header
+        currProjectId={currProjectId}
+        projects={projects}
+        onChangeProject={handleChangeProject}
+        onClickDateFilter={handleClickDateFilter}
+      />
       <Contents event={event} />
     </section>
   );

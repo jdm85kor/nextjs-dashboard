@@ -6,8 +6,8 @@ interface Props {
   totalSize: number;
   pageSize?: number;
   curPage?: number;
-  onClickNext: (page: number) => void;
-  onClickPrev: (page: number) => void;
+  onClickNext: () => void;
+  onClickPrev: () => void;
 }
 
 export default function Pagination({
@@ -17,13 +17,30 @@ export default function Pagination({
   onClickNext,
   onClickPrev,
 }: Props) {
+  const handleClickPrev = () => {
+    onClickPrev();
+  };
+
+  const handleClickNext = () => {
+    onClickNext();
+  };
+
   return (
     <div className={styles.pagination}>
       <span>
-        {(curPage - 1) * pageSize + 1} - {curPage * pageSize} of {totalSize}
+        {(curPage - 1) * pageSize + 1} -{" "}
+        {Math.min(curPage * pageSize, totalSize)} of {totalSize}
       </span>
-      <button>&lt;</button>
-      <button>&gt;</button>
+      <button type="button" disabled={curPage < 2} onClick={handleClickPrev}>
+        &lt;
+      </button>
+      <button
+        type="button"
+        disabled={curPage >= Math.ceil(totalSize / pageSize)}
+        onClick={handleClickNext}
+      >
+        &gt;
+      </button>
     </div>
   );
 }
