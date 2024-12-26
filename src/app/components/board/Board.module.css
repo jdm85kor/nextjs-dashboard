@@ -1,0 +1,7 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 0;
+  width: 100%;
+  gap: 40px;
+}

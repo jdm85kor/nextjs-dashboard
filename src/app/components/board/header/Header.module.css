@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.header .buttonGroup {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+
