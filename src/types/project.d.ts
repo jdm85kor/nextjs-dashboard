@@ -3,7 +3,7 @@ type TimeZone = {
   version?: string;
 };
 
-type Project = {
+export type Project = {
   id: string;
   displayName: string;
   timeZone: TimeZone;

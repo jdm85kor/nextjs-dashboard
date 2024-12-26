@@ -4,15 +4,14 @@ import Header from "./header/Header";
 import Contents from "./contents/Contents";
 import styles from "./Board.module.css";
 import { useState } from "react";
+import { DateFilter } from "../../types";
+import type { Project } from "../../../types/project";
+import type { Event } from "../../../types/event";
 
 interface Props {
-  projects: {
-    id: string;
-    displayName: string;
-    timeZone: any;
-  }[];
+  projects: Project[];
   event: {
-    events: { id: string; type: string; createTime: any }[];
+    events: Event[];
     nextPageToken: string;
     totalSize: number;
   };
@@ -35,6 +34,7 @@ export default function Board(props: Props) {
     <section className={styles.board}>
       <Header
         currProjectId={currProjectId}
+        dateFilter={dateFilter}
         projects={projects}
         onChangeProject={handleChangeProject}
         onClickDateFilter={handleClickDateFilter}

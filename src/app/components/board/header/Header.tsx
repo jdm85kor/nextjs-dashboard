@@ -4,14 +4,12 @@ import Dropdown from "../../dropdown/Dropdown";
 import Button from "../../button/Button";
 import { DateFilter } from "../../../types";
 import styles from "./Header.module.css";
+import type { Project } from "../../../../types/project";
 
 interface Props {
   currProjectId: string;
-  projects: {
-    id: string;
-    displayName: string;
-    timeZone: any;
-  }[];
+  dateFilter: DateFilter;
+  projects: Project[];
   onChangeProject: (projectId: string) => void;
   onClickDateFilter: (filter: DateFilter) => void;
 }

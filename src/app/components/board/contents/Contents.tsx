@@ -4,10 +4,11 @@
 import styles from "./Contents.module.css";
 import { useState } from "react";
 import Pagination from "../../pagination/Pagination";
+import type { Event } from "../../../../types/event";
 
 interface Props {
   event: {
-    events: { id: string; type: string; createTime: any }[];
+    events: Event[];
     nextPageToken: string;
     totalSize: number;
   };
@@ -41,7 +42,7 @@ export default function Contents(props: Props) {
             <tr key={id}>
               <td>{id}</td>
               <td>{type ?? "-"}</td>
-              <td>{BigInt(createTime?.seconds ?? 0)}</td>
+              <td>{createTime.toISOString()}</td>
             </tr>
           ))}
         </tbody>
