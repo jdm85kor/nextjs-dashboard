@@ -20,6 +20,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## 구조에 대한 설명
+1. server rendering, client rendering을 구분
+   1. server rendering 시점에는 첫 화면에 필요한 기본 api 호출 결과를 노출하도록 함.
+   2. client rendering 시점에는 user의 인터랙션에 의한 노출 처리를 함.
+2. component의 구분
+   1. board만 stateful 하게 구성함.
+   2. 그외 컴포넌트는 stateless 하게 구성함.
+   3. 공통으로 사용하고자 하는 컴포넌트는 atomic으로 그룹 구성함.
+3. api 호출과 관련된 리소스는 lib 폴더안에 구성함.
+4. 시간 (UTC), pagination (token) 처리에 이상 없도록 state 관리 함.
+5. 추가한 lib 들은 현 next.js, react.js 버전과 충돌이 없는 범위내에서 선택하여 사용함.
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
