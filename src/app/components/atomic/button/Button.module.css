@@ -1,3 +1,13 @@
 .button {
   min-width: 70px;
+  background-color: #ffffff;
+  color: #aaaaaa;
+  border: 1px solid #aaaaaa;
+}
+
+.button.--active {
+  min-width: 70px;
+  background-color: #dddddd;
+  color: #333333;
+  font-weight: bold;
 }

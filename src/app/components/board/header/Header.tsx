@@ -2,7 +2,7 @@
 
 import Dropdown from "../../atomic/dropdown/Dropdown";
 import Button from "../../atomic/button/Button";
-import { DateFilter } from "../../../types";
+import { DateFilter } from "../types";
 import styles from "./Header.module.css";
 import type { Project } from "../../../../types/project";
 
@@ -10,13 +10,37 @@ interface Props {
   currProjectId: string;
   dateFilter: DateFilter;
   projects: Project[];
-  onChangeProject: (projectId: string) => void;
+  onChangeProject: (project: Project) => void;
   onClickDateFilter: (filter: DateFilter) => void;
 }
+
+const ButtonsGroup = [
+  {
+    label: "Today",
+    value: "TODAY",
+  },
+  {
+    label: "Yesterday",
+    value: "YESTERDAY",
+  },
+  {
+    label: "This Week",
+    value: "THIS_WEEK",
+  },
+  {
+    label: "30D",
+    value: "LAST_30_DAYS",
+  },
+  {
+    label: "CUSTOM",
+    value: "CUSTOM",
+  },
+] as const;
 
 export default function Header({
   currProjectId,
   projects,
+  dateFilter,
   onChangeProject,
   onClickDateFilter,
 }: Props) {
@@ -28,45 +52,21 @@ export default function Header({
           label: displayName,
           value: id,
         }))}
-        onChange={(value) => onChangeProject(value)}
+        onChange={(value) =>
+          onChangeProject(projects.find((p) => p.id === value)!)
+        }
       />
       <ol className={styles.buttonGroup}>
-        <li key={1}>
-          <Button label="Today" value="TODAY" onClick={onClickDateFilter} />
-        </li>
-        <li key={2}>
-          <Button
-            label="Yesterday"
-            value="YESTERDAY"
-            onClick={onClickDateFilter}
-          />
-        </li>
-        <li key={3}>
-          <Button label="7D" value="LAST_7_DAYS" onClick={onClickDateFilter} />
-        </li>
-        <li key={4}>
-          <Button
-            label="30D"
-            value="LAST_30_DAYS"
-            onClick={onClickDateFilter}
-          />
-        </li>
-        <li key={5}>
-          <Button label="3M" value="LAST_3_MONTH" onClick={onClickDateFilter} />
-        </li>
-        <li key={6}>
-          <Button label="6M" value="LAST_6_MONTH" onClick={onClickDateFilter} />
-        </li>
-        <li key={7}>
-          <Button
-            label="12M"
-            value="LAST_12_MONTH"
-            onClick={onClickDateFilter}
-          />
-        </li>
-        <li key={8}>
-          <Button label="CUSTOM" value="CUSTOM" onClick={onClickDateFilter} />
-        </li>
+        {ButtonsGroup.map(({ label, value }) => (
+          <li key={value}>
+            <Button
+              label={label}
+              value={value}
+              active={dateFilter === value}
+              onClick={onClickDateFilter}
+            />
+          </li>
+        ))}
       </ol>
     </header>
   );

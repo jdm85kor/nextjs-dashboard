@@ -1,8 +1,6 @@
-"use strict";
-
+"use client";
 
 import { formatInTimeZone } from "date-fns-tz";
-import { useState } from "react";
 import Pagination from "../../atomic/pagination/Pagination";
 import type { Event } from "../../../../types/event";
 
@@ -15,19 +13,13 @@ interface Props {
     totalSize: number;
   };
   timeZone: string;
+  curPage: number;
+  movePrevPage: () => void;
+  moveNextPage: () => void;
 }
 
 export default function Contents(props: Props) {
-  const { event, timeZone } = props;
-
-  const [curPage, setCurPage] = useState(1);
-
-  const handleClickPrev = () => {
-    setCurPage((prev) => prev - 1);
-  };
-  const handleClickNext = () => {
-    setCurPage((prev) => prev + 1);
-  };
+  const { event, timeZone, curPage, movePrevPage, moveNextPage } = props;
 
   return (
     <main>
@@ -59,8 +51,8 @@ export default function Contents(props: Props) {
       <Pagination
         curPage={curPage}
         totalSize={event.totalSize}
-        onClickPrev={handleClickPrev}
-        onClickNext={handleClickNext}
+        onClickPrev={movePrevPage}
+        onClickNext={moveNextPage}
       />
     </main>
   );

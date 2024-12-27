@@ -17,27 +17,19 @@ export default function Pagination({
   onClickNext,
   onClickPrev,
 }: Props) {
-  const handleClickPrev = () => {
-    onClickPrev();
-  };
-
-  const handleClickNext = () => {
-    onClickNext();
-  };
-
   return (
     <div className={styles.pagination}>
       <span>
         {(curPage - 1) * pageSize + 1} -{" "}
         {Math.min(curPage * pageSize, totalSize)} of {totalSize}
       </span>
-      <button type="button" disabled={curPage < 2} onClick={handleClickPrev}>
+      <button type="button" disabled={curPage < 2} onClick={onClickPrev}>
         &lt;
       </button>
       <button
         type="button"
         disabled={curPage >= Math.ceil(totalSize / pageSize)}
-        onClick={handleClickNext}
+        onClick={onClickNext}
       >
         &gt;
       </button>
