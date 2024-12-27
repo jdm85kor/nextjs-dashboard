@@ -1,17 +1,23 @@
 "use client";
 
+import { DateRange, RangeKeyDict } from "react-date-range";
 import Dropdown from "../../atomic/dropdown/Dropdown";
 import Button from "../../atomic/button/Button";
-import { DateFilter } from "../types";
-import styles from "./Header.module.css";
+import type { DateFilter } from "../types";
 import type { Project } from "../../../../types/project";
+
+import styles from "./Header.module.css";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 interface Props {
   currProjectId: string;
   dateFilter: DateFilter;
   projects: Project[];
+  dateRange: { startDate: Date; endDate: Date; key: string };
   onChangeProject: (project: Project) => void;
   onClickDateFilter: (filter: DateFilter) => void;
+  onChangeDateRange: (start: Date, end: Date) => void;
 }
 
 const ButtonsGroup = [
@@ -41,9 +47,17 @@ export default function Header({
   currProjectId,
   projects,
   dateFilter,
+  dateRange,
   onChangeProject,
   onClickDateFilter,
+  onChangeDateRange,
 }: Props) {
+  const handleChangeDateRange = ({
+    selection: { startDate, endDate },
+  }: RangeKeyDict) => {
+    onChangeDateRange(startDate ?? new Date(), endDate ?? new Date());
+  };
+
   return (
     <header className={styles.header}>
       <Dropdown
@@ -67,6 +81,16 @@ export default function Header({
             />
           </li>
         ))}
+        {dateFilter === "CUSTOM" && (
+          <li key="date-picker">
+            <DateRange
+              editableDateInputs
+              onChange={handleChangeDateRange}
+              moveRangeOnFirstSelection={false}
+              ranges={[dateRange]}
+            />
+          </li>
+        )}
       </ol>
     </header>
   );

@@ -31,6 +31,11 @@ export default function Board(props: Props) {
     defaultEvent.nextPageToken,
   ]);
   const [dateFilter, setFilter] = useState<DateFilter>("LAST_30_DAYS");
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
   const getUpdatedEvent = async (
     projectId: string,
@@ -78,13 +83,49 @@ export default function Board(props: Props) {
     const updatedEvent = await getUpdatedEvent(
       curProject.id,
       "",
-      dateFilterConditionFromType(filter, curProject.timeZone.id)
+      dateFilterConditionFromType(filter, curProject.timeZone.id, {
+        startDate: new Date(),
+        endDate: new Date(),
+      })
     );
 
     if (!updatedEvent) return;
 
     setEventInfo(updatedEvent);
+    setCurPageNumber(1);
     setFilter(filter);
+
+    if (filter === "CUSTOM")
+      setDateRange({
+        startDate: new Date(),
+        endDate: new Date(),
+        key: "selection",
+      });
+
+    setPageTokens(
+      updatedEvent.nextPageToken ? [updatedEvent.nextPageToken] : []
+    );
+  };
+
+  const handleChangeDateRange = async (startDate: Date, endDate: Date) => {
+    setDateRange({
+      startDate,
+      endDate,
+      key: "selection",
+    });
+
+    const updatedEvent = await getUpdatedEvent(
+      curProject.id,
+      "",
+      dateFilterConditionFromType("CUSTOM", curProject.timeZone.id, {
+        startDate,
+        endDate,
+      })
+    );
+
+    if (!updatedEvent) return;
+
+    setEventInfo(updatedEvent);
     setCurPageNumber(1);
 
     setPageTokens(
@@ -98,7 +139,10 @@ export default function Board(props: Props) {
     const updatedEvent = await getUpdatedEvent(
       curProject.id,
       curPageNumber > 2 ? pageTokens[curPageNumber - 3] : "",
-      dateFilterConditionFromType(dateFilter, curProject.timeZone.id)
+      dateFilterConditionFromType(dateFilter, curProject.timeZone.id, {
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      })
     );
 
     if (updatedEvent) {
@@ -111,7 +155,10 @@ export default function Board(props: Props) {
     const updatedEvent = await getUpdatedEvent(
       curProject.id,
       pageTokens[curPageNumber - 1],
-      dateFilterConditionFromType(dateFilter, curProject.timeZone.id)
+      dateFilterConditionFromType(dateFilter, curProject.timeZone.id, {
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      })
     );
 
     if (!updatedEvent) return;
@@ -133,8 +180,10 @@ export default function Board(props: Props) {
         currProjectId={curProject.id}
         dateFilter={dateFilter}
         projects={projects}
+        dateRange={dateRange}
         onChangeProject={handleChangeProject}
         onClickDateFilter={handleClickDateFilter}
+        onChangeDateRange={handleChangeDateRange}
       />
       <Contents
         event={eventInfo}
